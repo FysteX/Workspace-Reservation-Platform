@@ -25,8 +25,7 @@ public class UserRepo implements UserRepoInterface{
 
             User foundUser = null;
             if (rs.next()) {
-                if(user.isAdmin() && rs.getString("type") == "admin") {
-                    foundUser = new User(
+                foundUser = new User(
                     rs.getString("username"), 
                     rs.getString("password"), 
                     rs.getString("firstname"), 
@@ -34,18 +33,10 @@ public class UserRepo implements UserRepoInterface{
                     rs.getString("number"),
                     rs.getString("email"),
                     rs.getString("type"),
-                    true);
-                } else if(!user.isAdmin() && rs.getString("type") != "admin") {
-                    foundUser = new User(
-                    rs.getString("username"), 
-                    rs.getString("password"), 
-                    rs.getString("firstname"), 
-                    rs.getString("lastname"),
-                    rs.getString("number"),
-                    rs.getString("email"),
-                    rs.getString("type"),
-                    false);
-                }
+                    rs.getString("firm name"),
+                    rs.getString("firm adress"),
+                    rs.getString("companyRegistrationNumber"),
+                    rs.getString("taxIdentificationNumber"));
                 
             }
             return foundUser;
@@ -54,6 +45,33 @@ public class UserRepo implements UserRepoInterface{
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public int postUser(User user) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("insert into users (username, password, firstname, lastname, number, email, type, firmName, firmAdress, companyRegistrationNumber, taxIdentificationNumber) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        ) {
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getFirstname());
+            pstmt.setString(4, user.getLastname());
+            pstmt.setString(5, user.getNumber());
+            pstmt.setString(6, user.getEmail());
+            pstmt.setString(7, user.getType());
+            pstmt.setString(8, user.getFirmName());
+            pstmt.setString(9, user.getFirmAdress());
+            pstmt.setString(10, user.getCompanyRegistrationNumber());
+            pstmt.setString(11, user.getTaxIdentificationNumber());
+
+            pstmt.executeUpdate();
+            return 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
     
 }

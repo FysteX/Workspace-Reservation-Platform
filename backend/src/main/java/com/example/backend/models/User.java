@@ -8,17 +8,25 @@ public class User {
     private String lastname;
     private String number;
     private String email;
+    private String firmName;
+    private String firmAdress;
+    private String companyRegistrationNumber;
+    private String taxIdentificationNumber;
     private String type;
-    private boolean admin;
 
-    public User(String username, String password, String name, String lastName, String number, String email, String type,boolean admin) {
+    public User(String username, String password, String name, String lastName, String number, String email, 
+        String firmName, String firmAdress, String companyRegistrationNumber, String taxIdentificationNumber, String type) {
         this.username = username;
         this.password = password;
         this.firstname = name;
         this.lastname = lastName;
         this.number = number;
         this.email = email;
-        this.admin = admin;
+        this.firmName = firmName;
+        this.firmAdress = firmAdress;
+        this.companyRegistrationNumber = companyRegistrationNumber;
+        this.taxIdentificationNumber = taxIdentificationNumber;
+        this.type = type;
     }
     public String getUsername() {
         return username;
@@ -56,16 +64,34 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
-    public boolean isAdmin() {
-        return admin;
-    }
     public String getType() {
         return type;
     }
     public void setType(String type) {
         this.type = type;
+    }
+    public void setFirmName(String firmName) {
+        this.firmName = firmName;
+    }
+    public void setFirmAdress(String firmAdress) {
+        this.firmAdress = firmAdress;
+    }
+    public void setCompanyRegistrationNumber(String companyRegistrationNumber) {
+        this.companyRegistrationNumber = companyRegistrationNumber;
+    }
+    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
+        this.taxIdentificationNumber = taxIdentificationNumber;
+    }
+    public String getFirmName() {
+        return firmName;
+    }
+    public String getFirmAdress() {
+        return firmAdress;
+    }
+    public String getCompanyRegistrationNumber() {
+        return companyRegistrationNumber;
+    }
+    public String getTaxIdentificationNumber() {
+        return taxIdentificationNumber;
     }
 }

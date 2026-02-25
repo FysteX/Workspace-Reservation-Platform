@@ -17,8 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
     
     @PostMapping("getUser")
-    public User postMethodName(@RequestBody User user) {
+    public User getUser(@RequestBody User user) {
        return new UserRepo().getUser(user);
+    }
+
+    @PostMapping("postUser")
+    public int postUser(@RequestBody User user) {
+        return new UserRepo().postUser(user);
     }
     
 }
