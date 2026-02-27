@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.backend.db.DB;
 import com.example.backend.models.User;
@@ -25,6 +27,12 @@ public class UserRepo implements UserRepoInterface{
 
             User foundUser = null;
             if (rs.next()) {
+                if(!user.getType().equals("admin") && rs.getString("type").equals("admin")) {
+                    return null;
+                }
+                if(rs.getBoolean("pending")) {
+                    return null;
+                }
                 foundUser = new User(
                     rs.getString("username"), 
                     rs.getString("password"), 
@@ -33,10 +41,11 @@ public class UserRepo implements UserRepoInterface{
                     rs.getString("number"),
                     rs.getString("email"),
                     rs.getString("type"),
-                    rs.getString("firm name"),
-                    rs.getString("firm adress"),
+                    rs.getString("firmName"),
+                    rs.getString("firmAdress"),
                     rs.getString("companyRegistrationNumber"),
-                    rs.getString("taxIdentificationNumber"));
+                    rs.getString("taxIdentificationNumber"),
+                    rs.getBoolean("pending"));
                 
             }
             return foundUser;
@@ -49,9 +58,13 @@ public class UserRepo implements UserRepoInterface{
 
     @Override
     public int postUser(User user) {
+        int numOfManagersForCompany = getNumOfManagersForCompany(user.getCompanyRegistrationNumber());
+        if(numOfManagersForCompany == 2) {
+            return 0;
+        }
         try (
             Connection conn = DB.source().getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("insert into users (username, password, firstname, lastname, number, email, type, firmName, firmAdress, companyRegistrationNumber, taxIdentificationNumber) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pstmt = conn.prepareStatement("insert into users (username, password, firstname, lastname, number, email, type, firmName, firmAdress, companyRegistrationNumber, taxIdentificationNumber, pending) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true)");
         ) {
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
@@ -72,6 +85,64 @@ public class UserRepo implements UserRepoInterface{
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public int getNumOfManagersForCompany(String companyRegistrationNumber) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from users where companyRegistrationNumber = ?");
+        ) {
+            pstmt.setString(1, companyRegistrationNumber);
+
+            int res = 0;
+
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                res++;
+            }
+
+            return res;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public List<User> getPendingUsers() {
+         try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from users where pending = 1");
+        ) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                users.add(new User(
+                    rs.getString("username"), 
+                    rs.getString("password"), 
+                    rs.getString("firstname"), 
+                    rs.getString("lastname"),
+                    rs.getString("number"),
+                    rs.getString("email"),
+                    rs.getString("type"),
+                    rs.getString("firmName"),
+                    rs.getString("firmAdress"),
+                    rs.getString("companyRegistrationNumber"),
+                    rs.getString("taxIdentificationNumber"),
+                    rs.getBoolean("pending")));
+                
+            }
+
+            System.out.println(users.size());
+            return users;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     
 }

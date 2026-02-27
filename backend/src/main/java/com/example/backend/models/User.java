@@ -13,9 +13,10 @@ public class User {
     private String companyRegistrationNumber;
     private String taxIdentificationNumber;
     private String type;
+    private boolean pending;
 
     public User(String username, String password, String name, String lastName, String number, String email, 
-        String firmName, String firmAdress, String companyRegistrationNumber, String taxIdentificationNumber, String type) {
+        String firmName, String firmAdress, String companyRegistrationNumber, String taxIdentificationNumber, String type, boolean pending) {
         this.username = username;
         this.password = password;
         this.firstname = name;
@@ -27,6 +28,7 @@ public class User {
         this.companyRegistrationNumber = companyRegistrationNumber;
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.type = type;
+        this.pending = pending;
     }
     public String getUsername() {
         return username;
@@ -93,5 +95,11 @@ public class User {
     }
     public String getTaxIdentificationNumber() {
         return taxIdentificationNumber;
+    }
+    public boolean isPending() {
+        return pending;
+    }
+    public void setPending(boolean pending) {
+        this.pending = pending;
     }
 }

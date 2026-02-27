@@ -1,6 +1,9 @@
 package com.example.backend.controllers;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +28,9 @@ public class UserController {
     public int postUser(@RequestBody User user) {
         return new UserRepo().postUser(user);
     }
-    
+
+    @GetMapping("getPendingUsers")
+    public List<User> getPendingUsers() {
+        return new UserRepo().getPendingUsers();
+    }    
 }
