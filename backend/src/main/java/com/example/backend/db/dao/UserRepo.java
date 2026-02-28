@@ -14,6 +14,10 @@ public class UserRepo implements UserRepoInterface{
 
     @Override
     public User getUser(User user) {
+
+        if(user.getPassword().equals("")) {
+            return getUserByUsername(user.getUsername());
+        }
         
         try (
             Connection conn = DB.source().getConnection();
@@ -48,6 +52,45 @@ public class UserRepo implements UserRepoInterface{
                     rs.getBoolean("pending"));
                 
             }
+
+            return foundUser;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User getUserByUsername(String username) {
+         try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from users where username=?");
+        ) {
+            pstmt.setString(1, username);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            User foundUser = null;
+            if (rs.next()) {
+                if(rs.getBoolean("pending")) {
+                    return null;
+                }
+                foundUser = new User(
+                    rs.getString("username"), 
+                    rs.getString("password"), 
+                    rs.getString("firstname"), 
+                    rs.getString("lastname"),
+                    rs.getString("number"),
+                    rs.getString("email"),
+                    rs.getString("type"),
+                    rs.getString("firmName"),
+                    rs.getString("firmAdress"),
+                    rs.getString("companyRegistrationNumber"),
+                    rs.getString("taxIdentificationNumber"),
+                    rs.getBoolean("pending"));
+                
+            }
+
             return foundUser;
 
         } catch (SQLException e) {

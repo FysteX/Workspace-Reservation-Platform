@@ -15,8 +15,8 @@ public class User {
     private String type;
     private boolean pending;
 
-    public User(String username, String password, String name, String lastName, String number, String email, 
-        String firmName, String firmAdress, String companyRegistrationNumber, String taxIdentificationNumber, String type, boolean pending) {
+    public User(String username, String password, String name, String lastName, String number, String email, String type,
+        String firmName, String firmAdress, String companyRegistrationNumber, String taxIdentificationNumber, boolean pending) {
         this.username = username;
         this.password = password;
         this.firstname = name;

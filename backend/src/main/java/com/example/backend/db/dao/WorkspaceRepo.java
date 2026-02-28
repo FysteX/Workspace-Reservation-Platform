@@ -25,6 +25,7 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
                 ResultSet rs = pstmt.executeQuery();
                 while(rs.next()) {
                     workspaces.add(new Workspace(
+                    rs.getInt("idWorkspace"),
                     rs.getString("name"),
                     rs.getString("city"),
                     rs.getInt("likes"),
@@ -79,6 +80,7 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
                 workspace = new Workspace(
+                rs.getInt("idWorkspace"),
                 rs.getString("name"),
                 rs.getString("city"),
                 rs.getInt("likes"),

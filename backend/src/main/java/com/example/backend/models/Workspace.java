@@ -1,6 +1,7 @@
 package com.example.backend.models;
 
 public class Workspace {
+    private int idWorkspace;
     private String name;
     private String city;
     private int likes;
@@ -66,8 +67,9 @@ public class Workspace {
         return manager;
     }
 
-    public Workspace(String name, String city, int likes, boolean activeStatus, String adress, String firmName,
+    public Workspace(int idWorkspace, String name, String city, int likes, boolean activeStatus, String adress, String firmName,
             String manager, int tables) {
+        this.idWorkspace = idWorkspace;        
         this.name = name;
         this.city = city;
         this.likes = likes;
@@ -84,5 +86,13 @@ public class Workspace {
 
     public void setTables(int tables) {
         this.tables = tables;
+    }
+
+    public int getIdWorkspace() {
+        return idWorkspace;
+    }
+
+    public void setIdWorkspace(int idWorkspace) {
+        this.idWorkspace = idWorkspace;
     }
 }
