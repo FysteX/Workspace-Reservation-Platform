@@ -179,13 +179,39 @@ public class UserRepo implements UserRepoInterface{
                 
             }
 
-            System.out.println(users.size());
             return users;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public int updateUser(User user) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("update users set password = ?, firstname = ?, lastname = ?, number = ?, email = ?, firmname = ?, firmAdress = ?, companyRegistrationNumber = ?, taxidentificationNumber = ?, pending = ? where username = ?");
+        ) {
+
+            pstmt.setString(1, user.getPassword());
+            pstmt.setString(2, user.getFirstname());
+            pstmt.setString(3, user.getLastname());
+            pstmt.setString(4, user.getNumber());
+            pstmt.setString(5, user.getEmail());
+            pstmt.setString(6, user.getFirmName());
+            pstmt.setString(7, user.getFirmAdress());
+            pstmt.setString(8, user.getCompanyRegistrationNumber());
+            pstmt.setString(9, user.getTaxIdentificationNumber());
+            pstmt.setBoolean(10, user.isPending());
+            pstmt.setString(11, user.getUsername());
+
+            return pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
     
 }

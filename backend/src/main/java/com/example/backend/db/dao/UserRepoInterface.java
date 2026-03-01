@@ -13,4 +13,6 @@ public interface UserRepoInterface {
     public int getNumOfManagersForCompany(String companyRegistrationNumber);
 
     public List<User> getPendingUsers();
+
+    public int updateUser(User user);
 }

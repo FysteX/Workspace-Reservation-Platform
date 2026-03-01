@@ -33,4 +33,10 @@ public class UserController {
     public List<User> getPendingUsers() {
         return new UserRepo().getPendingUsers();
     }    
+
+    @PostMapping("updateUser")
+    public int updateUser(@RequestBody User user) {
+        return new UserRepo().updateUser(user);
+    }
+    
 }
