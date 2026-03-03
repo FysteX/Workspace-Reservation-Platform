@@ -44,5 +44,26 @@ public class RoomRepo implements RoomRepoInterface {
         }
         return null;
     }
+
+    @Override
+    public int postRoom(Room room) {
+       try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("insert into rooms (idWorkspace, name, type, tables, description) values (?, ?, ?, ?, ?)");
+        ) {
+            pstmt.setInt(1, room.getIdWorkspace());
+            pstmt.setString(2, room.getName());
+            pstmt.setString(3, room.getType());
+            pstmt.setInt(4, room.getTables());
+            pstmt.setString(5, room.getDescription());
+
+            pstmt.executeUpdate();
+            return 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
 

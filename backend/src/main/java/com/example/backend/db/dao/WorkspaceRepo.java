@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.backend.db.DB;
+import com.example.backend.models.User;
 import com.example.backend.models.Workspace;
 
 public class WorkspaceRepo implements WorkspaceRepoInterface {
@@ -33,7 +34,8 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
                     rs.getString("adress"), 
                     rs.getString("firmName"),
                     rs.getString("manager"),
-                    rs.getInt("tables")));
+                    rs.getInt("tables"),
+                    rs.getInt("price")));
                 }
             }
 
@@ -88,7 +90,8 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
                 rs.getString("adress"), 
                 rs.getString("firmName"),
                 rs.getString("manager"),
-                rs.getInt("tables"));
+                rs.getInt("tables"),
+                rs.getInt("price"));
             }
 
             return workspace;
@@ -119,5 +122,118 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
         }
         return -1;
     }
+
+    @Override
+    public Workspace getWorkspaceWithId(int id) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from workspaces where idWorkspace = ?");
+        ) {
+            Workspace workspace = null;
+
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                workspace = new Workspace(
+                rs.getInt("idWorkspace"),
+                rs.getString("name"),
+                rs.getString("city"),
+                rs.getInt("likes"),
+                rs.getBoolean("activeStatus"),
+                rs.getString("adress"), 
+                rs.getString("firmName"),
+                rs.getString("manager"),
+                rs.getInt("tables"),
+                rs.getInt("price"));
+            }
+
+            return workspace;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Workspace> getWorkspacesForManager(User user) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from workspaces where manager = ?");
+        ) {
+            List<Workspace> workspaces = new ArrayList<>();
+
+            pstmt.setString(1, user.getUsername());
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                workspaces.add(new Workspace(
+                rs.getInt("idWorkspace"),
+                rs.getString("name"),
+                rs.getString("city"),
+                rs.getInt("likes"),
+                rs.getBoolean("activeStatus"),
+                rs.getString("adress"), 
+                rs.getString("firmName"),
+                rs.getString("manager"),
+                rs.getInt("tables"),
+                rs.getInt("price")));
+            }
+
+            return workspaces;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private boolean getWorkspaceForNameAndCity(String name, String city) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from workspaces where name = ? and city = ?");
+        ) {
+            pstmt.setString(1, name);
+            pstmt.setString(2, city);
+
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                return true;
+            }
+
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public int postWorkspace(Workspace workspace) {
+        if(getWorkspaceForNameAndCity(workspace.getName(), workspace.getCity())) {
+            return 0;
+        }
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("insert into workspaces (name, city, activeStatus, adress, firmName, manager, tables, price) values (?, ?, false, ?, ?, ?, ?, ?)");
+        ) {
+            pstmt.setString(1, workspace.getName());
+            pstmt.setString(2, workspace.getCity());
+            pstmt.setString(3, workspace.getAdress());
+            pstmt.setString(4, workspace.getFirmName());
+            pstmt.setString(5, workspace.getManager());
+            pstmt.setInt(6, workspace.getTables());
+            pstmt.setInt(7, workspace.getPrice());
+
+
+            pstmt.executeUpdate();
+            return 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    
     
 }

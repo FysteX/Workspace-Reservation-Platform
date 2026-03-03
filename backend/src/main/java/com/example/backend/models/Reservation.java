@@ -2,6 +2,7 @@ package com.example.backend.models;
 
 public class Reservation {
     private int idReservation;
+    private String roomName;
     private String user;
     private String workspaceName;
     private String city;
@@ -50,14 +51,22 @@ public class Reservation {
     public boolean isActive() {
         return active;
     }
-    public Reservation(int idReservation, String user, String workspaceName, String city, String startDate,
+    
+    public String getRoomName() {
+        return roomName;
+    }
+    public Reservation(int idReservation, String roomName, String user, String workspaceName, String city, String startDate,
             String endDate, boolean active) {
         this.idReservation = idReservation;
+        this.roomName = roomName;
         this.user = user;
         this.workspaceName = workspaceName;
         this.city = city;
         this.startDate = startDate;
         this.endDate = endDate;
         this.active = active;
+    }
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 }

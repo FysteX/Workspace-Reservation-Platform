@@ -24,5 +24,9 @@ public class RoomControler {
         return new RoomRepo().getRoomsForWorkspace(workspaces);
     }
     
+    @PostMapping("postRoom")
+    public int postRoom(@RequestBody Room room ) {
+        return new RoomRepo().postRoom(room);
+    }
 
 }

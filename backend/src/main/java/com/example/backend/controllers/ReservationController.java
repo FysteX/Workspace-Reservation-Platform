@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.db.dao.ReservationRepo;
 import com.example.backend.models.Reservation;
+import com.example.backend.models.Room;
 import com.example.backend.models.User;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,9 +21,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ReservationController {
     
     @PostMapping("getReservationsForUser")
-    public List<Reservation> getAllUsers(@RequestBody User user) {
+    public List<Reservation> getReservationsForUser(@RequestBody User user) {
         return new ReservationRepo().getAllReservationsForUser(user);
     }
     
+    @PostMapping("getReservationsForRoom")
+    public List<Reservation> getReservationsForRoom(@RequestBody Room room) {
+        return new ReservationRepo().getAllReservationsForRoom(room);
+    }
+
+    @PostMapping("postReservation")
+    public int postReservation(@RequestBody Reservation reservation) {
+        return new ReservationRepo().postReservation(reservation);
+    }
 
 }

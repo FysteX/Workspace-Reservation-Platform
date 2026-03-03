@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.db.dao.WorkspaceRepo;
+import com.example.backend.models.User;
 import com.example.backend.models.Workspace;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,5 +38,16 @@ public class WorkspaceController {
     @GetMapping("getCities")
     public List<String> getCities() {
         return new WorkspaceRepo().getCities();
+    }
+
+    @PostMapping("getWorkspacesForManager")
+    public List<Workspace> getWorkspacesForManager(@RequestBody User user) {
+        return new WorkspaceRepo().getWorkspacesForManager(user);
+    }
+
+    @PostMapping("postWorkspace")
+    public int postWorkspace(@RequestBody Workspace workspace) {
+        System.out.println("AAA");
+        return new WorkspaceRepo().postWorkspace(workspace);
     }
 }

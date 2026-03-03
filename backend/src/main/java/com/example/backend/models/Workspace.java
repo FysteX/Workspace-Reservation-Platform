@@ -10,6 +10,7 @@ public class Workspace {
     private String firmName;
     private String manager;
     private int tables;
+    private int price;
     
     public void setName(String name) {
         this.name = name;
@@ -68,7 +69,7 @@ public class Workspace {
     }
 
     public Workspace(int idWorkspace, String name, String city, int likes, boolean activeStatus, String adress, String firmName,
-            String manager, int tables) {
+            String manager, int tables, int price) {
         this.idWorkspace = idWorkspace;        
         this.name = name;
         this.city = city;
@@ -78,6 +79,7 @@ public class Workspace {
         this.firmName = firmName;
         this.manager = manager;
         this.tables = tables;
+        this.price = price;
     }
 
     public int getTables() {
@@ -94,5 +96,13 @@ public class Workspace {
 
     public void setIdWorkspace(int idWorkspace) {
         this.idWorkspace = idWorkspace;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

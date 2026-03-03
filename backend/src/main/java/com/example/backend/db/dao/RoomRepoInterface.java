@@ -9,4 +9,5 @@ public interface RoomRepoInterface {
     
     List<Room> getRoomsForWorkspace(Workspace[] workspaces);
 
+    public int postRoom(Room room);
 }
