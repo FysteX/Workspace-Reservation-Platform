@@ -21,12 +21,17 @@ public class RoomControler {
     
     @PostMapping("getRoomsForWorkspaces")
     public List<Room> postMethodName(@RequestBody Workspace[] workspaces) {
-        return new RoomRepo().getRoomsForWorkspace(workspaces);
+        return new RoomRepo().getRoomsForWorkspaces(workspaces);
     }
     
     @PostMapping("postRoom")
     public int postRoom(@RequestBody Room room ) {
         return new RoomRepo().postRoom(room);
+    }
+
+    @PostMapping("updateRoom")
+    public int updateRoom(@RequestBody Room room ) {
+        return new RoomRepo().updateRoom(room);
     }
 
 }

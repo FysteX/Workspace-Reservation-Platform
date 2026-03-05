@@ -20,4 +20,6 @@ public interface WorkspaceRepoInterface {
     public List<Workspace> getWorkspacesForManager(User user);
 
     public int postWorkspace(Workspace workspace);
+
+    public int updateWorkspace(Workspace workspace);
 }

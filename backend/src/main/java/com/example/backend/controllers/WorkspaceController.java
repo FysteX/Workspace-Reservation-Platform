@@ -47,7 +47,11 @@ public class WorkspaceController {
 
     @PostMapping("postWorkspace")
     public int postWorkspace(@RequestBody Workspace workspace) {
-        System.out.println("AAA");
         return new WorkspaceRepo().postWorkspace(workspace);
+    }
+
+    @PostMapping("updateWorkspace")
+    public int updateWorkspace(@RequestBody Workspace workspace) {
+        return new WorkspaceRepo().updateWorkspace(workspace);
     }
 }

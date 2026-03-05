@@ -7,7 +7,9 @@ import com.example.backend.models.Workspace;
 
 public interface RoomRepoInterface {
     
-    List<Room> getRoomsForWorkspace(Workspace[] workspaces);
+    List<Room> getRoomsForWorkspaces(Workspace[] workspaces);
 
     public int postRoom(Room room);
+
+    public int updateRoom(Room room);
 }

@@ -14,8 +14,17 @@ import com.example.backend.models.Workspace;
 
 public class RoomRepo implements RoomRepoInterface {
 
+
+    public List<Room> getRoomsForWorkspaces(List<Workspace> workspaces) {
+        Workspace[] workspacesArray = new Workspace[workspaces.size()];
+        for(int i = 0 ; i < workspaces.size() ; i++) {
+            workspacesArray[i] = workspaces.get(i);
+        }
+        return getRoomsForWorkspaces(workspacesArray);
+    }
+
     @Override
-    public List<Room> getRoomsForWorkspace(Workspace[] workspaces) {
+    public List<Room> getRoomsForWorkspaces(Workspace[] workspaces) {
        try (
             Connection conn = DB.source().getConnection();
             PreparedStatement pstmt = conn.prepareStatement("select * from rooms where idWorkspace = ?");
@@ -45,8 +54,35 @@ public class RoomRepo implements RoomRepoInterface {
         return null;
     }
 
+    private boolean doesRoomWithAlreadyExist(Room room) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from rooms where idWorkspace = ? and name = ? and type = ?");
+        ) {
+
+            pstmt.setInt(1, room.getIdWorkspace());
+            pstmt.setString(2, room.getName());
+            pstmt.setString(3, room.getType());
+
+            ResultSet rs = pstmt.executeQuery();
+            
+            if(rs.next()) {
+                return true;
+            }
+            
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     @Override
     public int postRoom(Room room) {
+        if(doesRoomWithAlreadyExist(room)) {
+            return 0;
+        }
        try (
             Connection conn = DB.source().getConnection();
             PreparedStatement pstmt = conn.prepareStatement("insert into rooms (idWorkspace, name, type, tables, description) values (?, ?, ?, ?, ?)");
@@ -59,6 +95,27 @@ public class RoomRepo implements RoomRepoInterface {
 
             pstmt.executeUpdate();
             return 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public int updateRoom(Room room) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("update rooms set tables = ?, description = ? where idWorkspace = ? and name = ? and type = ?");
+        ) {
+
+            pstmt.setInt(1, room.getTables());
+            pstmt.setString(2, room.getDescription());
+            pstmt.setInt(3, room.getIdWorkspace());
+            pstmt.setString(4, room.getName());
+            pstmt.setString(5, room.getType());
+            
+            return pstmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

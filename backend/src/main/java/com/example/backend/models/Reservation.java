@@ -6,8 +6,9 @@ public class Reservation {
     private String user;
     private String workspaceName;
     private String city;
-    private String startDate;
-    private String endDate;
+    private String date;
+    private String startTime;
+    private String endTime;
     private boolean active;
     public void setIdReservation(int idReservation) {
         this.idReservation = idReservation;
@@ -21,11 +22,8 @@ public class Reservation {
     public void setCity(String city) {
         this.city = city;
     }
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setDate(String date) {
+        this.date = date;
     }
     public void setActive(boolean active) {
         this.active = active;
@@ -42,11 +40,8 @@ public class Reservation {
     public String getCity() {
         return city;
     }
-    public String getStartDate() {
-        return startDate;
-    }
-    public String getEndDate() {
-        return endDate;
+    public String getDate() {
+        return date;
     }
     public boolean isActive() {
         return active;
@@ -55,15 +50,30 @@ public class Reservation {
     public String getRoomName() {
         return roomName;
     }
-    public Reservation(int idReservation, String roomName, String user, String workspaceName, String city, String startDate,
-            String endDate, boolean active) {
+    
+    public String getStartTime() {
+        return startTime;
+    }
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+    public Reservation(int idReservation, String roomName, String user, String workspaceName, String city, String date,
+            String startTime, String endTime, boolean active) {
         this.idReservation = idReservation;
         this.roomName = roomName;
         this.user = user;
         this.workspaceName = workspaceName;
         this.city = city;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.active = active;
     }
     public void setRoomName(String roomName) {

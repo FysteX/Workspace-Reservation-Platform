@@ -187,7 +187,7 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
         return null;
     }
 
-    private boolean getWorkspaceForNameAndCity(String name, String city) {
+    private int getWorkspaceForNameAndCity(String name, String city) {
         try (
             Connection conn = DB.source().getConnection();
             PreparedStatement pstmt = conn.prepareStatement("select * from workspaces where name = ? and city = ?");
@@ -197,20 +197,20 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
 
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                return true;
+                return rs.getInt("idWorkspace");
             }
 
-            return false;
+            return -1;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     @Override
     public int postWorkspace(Workspace workspace) {
-        if(getWorkspaceForNameAndCity(workspace.getName(), workspace.getCity())) {
+        if(getWorkspaceForNameAndCity(workspace.getName(), workspace.getCity()) > 0) {
             return 0;
         }
         try (
@@ -227,7 +227,34 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
 
 
             pstmt.executeUpdate();
-            return 1;
+            return getWorkspaceForNameAndCity(workspace.getName(), workspace.getCity());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public int updateWorkspace(Workspace workspace) {
+        int existingWorkspaceId = getWorkspaceForNameAndCity(workspace.getName(), workspace.getCity());
+        if(existingWorkspaceId > 0 && existingWorkspaceId != workspace.getIdWorkspace()) {
+            //ako postoji neki drugi prostor sa istim imenom u istom gradu
+            return 0;
+        }
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("update workspaces set name = ?, city = ?, adress = ?, tables = ?, price = ? where idWorkspace = ?");
+        ) {
+
+            pstmt.setString(1, workspace.getName());
+            pstmt.setString(2, workspace.getCity());
+            pstmt.setString(3, workspace.getAdress());
+            pstmt.setInt(4, workspace.getTables());
+            pstmt.setInt(5, workspace.getPrice());
+            pstmt.setInt(6, workspace.getIdWorkspace());
+            
+            return pstmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

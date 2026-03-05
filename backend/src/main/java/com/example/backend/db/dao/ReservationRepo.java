@@ -35,8 +35,9 @@ public class ReservationRepo implements ReservationRepoInterface{
                     rs.getString("user"),
                     rs.getString("workspaceName"),
                     rs.getString("city"),
-                    rs.getString("startDate"),
-                    rs.getString("endDate"),
+                    rs.getString("date"),
+                    rs.getString("startTime"),
+                    rs.getString("endTime"),
                     rs.getBoolean("active")));
             }
 
@@ -71,8 +72,9 @@ public class ReservationRepo implements ReservationRepoInterface{
                     rs.getString("user"),
                     rs.getString("workspaceName"),
                     rs.getString("city"),
-                    rs.getString("startDate"),
-                    rs.getString("endDate"),
+                    rs.getString("date"),
+                    rs.getString("startTime"),
+                    rs.getString("endTime"),
                     rs.getBoolean("active")));
             }
 
@@ -88,15 +90,16 @@ public class ReservationRepo implements ReservationRepoInterface{
     public int postReservation(Reservation reservation) {
         try (
             Connection conn = DB.source().getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("insert into reservations (idReservation, roomName, user, workspaceName, city, startDate, endDate, active) values (?, ?, ?, ?, ?, ?, ?, false)");
+            PreparedStatement pstmt = conn.prepareStatement("insert into reservations (idReservation, roomName, user, workspaceName, city, date, startTime, endTime, active) values (?, ?, ?, ?, ?, ?, ?, ?, false)");
         ) {
             pstmt.setInt(1, reservation.getIdReservation());
             pstmt.setString(2, reservation.getRoomName());
             pstmt.setString(3, reservation.getUser());
             pstmt.setString(4, reservation.getWorkspaceName());
             pstmt.setString(5, reservation.getCity());
-            pstmt.setString(6, reservation.getStartDate());
-            pstmt.setString(7, reservation.getEndDate());
+            pstmt.setString(6, reservation.getDate());
+            pstmt.setString(7, reservation.getStartTime());
+            pstmt.setString(8, reservation.getEndTime());
 
             pstmt.executeUpdate();
             return 1;
@@ -105,6 +108,54 @@ public class ReservationRepo implements ReservationRepoInterface{
             e.printStackTrace();
         }
         return -1;
+    }
+
+    @Override
+    public List<Reservation> getAllReservationsForManager(User manager) {
+        List<Workspace> workspaces = new WorkspaceRepo().getWorkspacesForManager(manager);
+
+        List<Reservation> reservations = new ArrayList<>();
+
+        for(Workspace workspace : workspaces) {
+            reservations.addAll(getAllReservationsForWorkspace(workspace));
+        }
+
+        return reservations;
+    }
+
+    @Override
+    public List<Reservation> getAllReservationsForWorkspace(Workspace workspace) {
+       try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from reservations where workspaceName = ? and city = ?");
+        ) {
+
+            pstmt.setString(1, workspace.getName());
+            pstmt.setString(2, workspace.getCity());
+
+            List<Reservation> reservations = new ArrayList<>();
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while(rs.next()) {
+                reservations.add(new Reservation(
+                    rs.getInt("idReservation"),
+                    rs.getString("roomName"),
+                    rs.getString("user"),
+                    rs.getString("workspaceName"),
+                    rs.getString("city"),
+                    rs.getString("date"),
+                    rs.getString("startTime"),
+                    rs.getString("endTime"),
+                    rs.getBoolean("active")));
+            }
+
+            return reservations;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     

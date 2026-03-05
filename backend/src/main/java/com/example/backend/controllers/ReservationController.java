@@ -35,4 +35,9 @@ public class ReservationController {
         return new ReservationRepo().postReservation(reservation);
     }
 
+    @PostMapping("getReservationsForManager")
+    public List<Reservation> getReservationsForManager(@RequestBody User manager) {
+        return new ReservationRepo().getAllReservationsForManager(manager);
+    }
+
 }
