@@ -12,4 +12,6 @@ public interface RoomRepoInterface {
     public int postRoom(Room room);
 
     public int updateRoom(Room room);
+
+    public int deleteRoomsForWorkspace(Workspace workspace);
 }

@@ -22,4 +22,8 @@ public interface WorkspaceRepoInterface {
     public int postWorkspace(Workspace workspace);
 
     public int updateWorkspace(Workspace workspace);
+
+    public List<Workspace> getAllWorkspaces();
+
+    public int deleteWorkspace(Workspace workspace);
 }

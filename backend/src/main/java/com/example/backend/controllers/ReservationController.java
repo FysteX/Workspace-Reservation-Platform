@@ -40,4 +40,9 @@ public class ReservationController {
         return new ReservationRepo().getAllReservationsForManager(manager);
     }
 
+    @PostMapping("updateReservation")
+    public int updateReservation(@RequestBody Reservation reservation) {
+        return new ReservationRepo().updateReservation(reservation);
+    }
+
 }

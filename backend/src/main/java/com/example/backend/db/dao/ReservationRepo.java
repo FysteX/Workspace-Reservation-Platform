@@ -38,7 +38,8 @@ public class ReservationRepo implements ReservationRepoInterface{
                     rs.getString("date"),
                     rs.getString("startTime"),
                     rs.getString("endTime"),
-                    rs.getBoolean("active")));
+                    rs.getBoolean("active"),
+                    rs.getString("showedUp")));
             }
 
             return reservations;
@@ -75,7 +76,8 @@ public class ReservationRepo implements ReservationRepoInterface{
                     rs.getString("date"),
                     rs.getString("startTime"),
                     rs.getString("endTime"),
-                    rs.getBoolean("active")));
+                    rs.getBoolean("active"),
+                    rs.getString("showedUp")));
             }
 
             return reservations;
@@ -147,7 +149,8 @@ public class ReservationRepo implements ReservationRepoInterface{
                     rs.getString("date"),
                     rs.getString("startTime"),
                     rs.getString("endTime"),
-                    rs.getBoolean("active")));
+                    rs.getBoolean("active"),
+                    rs.getString("showedUp")));
             }
 
             return reservations;
@@ -156,6 +159,33 @@ public class ReservationRepo implements ReservationRepoInterface{
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public int updateReservation(Reservation reservation) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("update reservations set roomName = ?, user = ?, workspaceName = ?, city = ?, date = ?, startTime = ?, endTime = ?, active = ?, showedUp = ? where idReservation = ?");
+        ) {
+            
+            pstmt.setString(1, reservation.getRoomName());
+            pstmt.setString(2, reservation.getUser());
+            pstmt.setString(3, reservation.getWorkspaceName());
+            pstmt.setString(4, reservation.getCity());
+            pstmt.setString(5, reservation.getDate());
+            pstmt.setString(6, reservation.getStartTime());
+            pstmt.setString(7, reservation.getEndTime());
+            pstmt.setBoolean(8, reservation.isActive());
+            pstmt.setString(9, reservation.getShowedUp());
+            pstmt.setInt(10, reservation.getIdReservation());
+
+            pstmt.executeUpdate();
+            return 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     

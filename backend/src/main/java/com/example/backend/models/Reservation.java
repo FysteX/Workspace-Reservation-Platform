@@ -10,6 +10,8 @@ public class Reservation {
     private String startTime;
     private String endTime;
     private boolean active;
+    private String showedUp;
+    
     public void setIdReservation(int idReservation) {
         this.idReservation = idReservation;
     }
@@ -57,7 +59,6 @@ public class Reservation {
     public String getEndTime() {
         return endTime;
     }
-
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
@@ -65,7 +66,7 @@ public class Reservation {
         this.endTime = endTime;
     }
     public Reservation(int idReservation, String roomName, String user, String workspaceName, String city, String date,
-            String startTime, String endTime, boolean active) {
+            String startTime, String endTime, boolean active, String showedUp) {
         this.idReservation = idReservation;
         this.roomName = roomName;
         this.user = user;
@@ -75,8 +76,15 @@ public class Reservation {
         this.startTime = startTime;
         this.endTime = endTime;
         this.active = active;
+        this.showedUp = showedUp;
     }
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+    public String getShowedUp() {
+        return showedUp;
+    }
+    public void setShowedUp(String showedUp) {
+        this.showedUp = showedUp;
     }
 }

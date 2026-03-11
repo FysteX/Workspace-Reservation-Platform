@@ -15,4 +15,8 @@ public interface UserRepoInterface {
     public List<User> getPendingUsers();
 
     public int updateUser(User user);
+
+    public List<User> getAllUsers();
+
+    public int deleteUser(User user);
 }

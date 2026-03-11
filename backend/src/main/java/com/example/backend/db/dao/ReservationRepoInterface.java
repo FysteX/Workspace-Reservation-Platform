@@ -19,4 +19,6 @@ public interface ReservationRepoInterface {
 
     List<Reservation> getAllReservationsForManager(User manager);
 
+    int updateReservation(Reservation reservation);
+
 }

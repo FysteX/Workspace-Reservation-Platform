@@ -54,4 +54,14 @@ public class WorkspaceController {
     public int updateWorkspace(@RequestBody Workspace workspace) {
         return new WorkspaceRepo().updateWorkspace(workspace);
     }
+
+    @GetMapping("getAllWorkspaces")
+    public List<Workspace> getAllWorkspaces() {
+        return new WorkspaceRepo().getAllWorkspaces();
+    }
+
+    @PostMapping("deleteWorkspace")
+    public int deleteWorkspace(@RequestBody Workspace workspace) {
+        return new WorkspaceRepo().deleteWorkspace(workspace);
+    }
 }

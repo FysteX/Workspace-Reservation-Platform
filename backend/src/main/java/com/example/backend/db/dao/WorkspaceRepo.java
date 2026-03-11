@@ -244,7 +244,7 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
         }
         try (
             Connection conn = DB.source().getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("update workspaces set name = ?, city = ?, adress = ?, tables = ?, price = ? where idWorkspace = ?");
+            PreparedStatement pstmt = conn.prepareStatement("update workspaces set name = ?, city = ?, adress = ?, tables = ?, price = ?, activeStatus = ? where idWorkspace = ?");
         ) {
 
             pstmt.setString(1, workspace.getName());
@@ -252,7 +252,8 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
             pstmt.setString(3, workspace.getAdress());
             pstmt.setInt(4, workspace.getTables());
             pstmt.setInt(5, workspace.getPrice());
-            pstmt.setInt(6, workspace.getIdWorkspace());
+            pstmt.setBoolean(6, workspace.isActiveStatus());
+            pstmt.setInt(7, workspace.getIdWorkspace());
             
             return pstmt.executeUpdate();
 
@@ -261,6 +262,59 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
         }
         return -1;
     }
-    
-    
+
+    @Override
+    public List<Workspace> getAllWorkspaces() {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from workspaces");
+        ) {
+            List<Workspace> workspaces = new ArrayList<>();
+
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                workspaces.add(new Workspace(
+                rs.getInt("idWorkspace"),
+                rs.getString("name"),
+                rs.getString("city"),
+                rs.getInt("likes"),
+                rs.getBoolean("activeStatus"),
+                rs.getString("adress"), 
+                rs.getString("firmName"),
+                rs.getString("manager"),
+                rs.getInt("tables"),
+                rs.getInt("price")));
+            }
+
+            return workspaces;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public int deleteWorkspace(Workspace workspace) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("delete from workspaces where idWorkspace = ?");
+        ) {
+
+            pstmt.setInt(1, workspace.getIdWorkspace());
+
+            int res = pstmt.executeUpdate();
+
+            if(res > 0) {
+                new RoomRepo().deleteRoomsForWorkspace(workspace);
+            }
+
+            return res;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 }

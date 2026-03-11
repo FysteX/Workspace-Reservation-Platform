@@ -213,5 +213,56 @@ public class UserRepo implements UserRepoInterface{
         }
         return -1;
     }
-    
+
+    @Override
+    public List<User> getAllUsers() {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("select * from users");
+        ) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                users.add(new User(
+                    rs.getString("username"), 
+                    rs.getString("password"), 
+                    rs.getString("firstname"), 
+                    rs.getString("lastname"),
+                    rs.getString("number"),
+                    rs.getString("email"),
+                    rs.getString("type"),
+                    rs.getString("firmName"),
+                    rs.getString("firmAdress"),
+                    rs.getString("companyRegistrationNumber"),
+                    rs.getString("taxIdentificationNumber"),
+                    rs.getBoolean("pending")));
+                
+            }
+
+            return users;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public int deleteUser(User user) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("delete from users where username = ?");
+        ) {
+
+            pstmt.setString(1, user.getUsername());
+
+            return pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

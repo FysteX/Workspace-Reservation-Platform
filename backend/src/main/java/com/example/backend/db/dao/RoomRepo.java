@@ -122,5 +122,22 @@ public class RoomRepo implements RoomRepoInterface {
         }
         return -1;
     }
+
+    @Override
+    public int deleteRoomsForWorkspace(Workspace workspace) {
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("delete from rooms where idWorkspace = ?");
+        ) {
+
+            pstmt.setInt(1, workspace.getIdWorkspace());
+
+            return pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
 

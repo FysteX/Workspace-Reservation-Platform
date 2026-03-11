@@ -38,5 +38,16 @@ public class UserController {
     public int updateUser(@RequestBody User user) {
         return new UserRepo().updateUser(user);
     }
+
+    @GetMapping("getAllUsers")
+    public List<User> getAllUsers(){
+        return new UserRepo().getAllUsers();
+    }
+
+    @PostMapping("deleteUser")
+    public int deleteUser(@RequestBody User user) {
+        return new UserRepo().deleteUser(user);
+    }
+    
     
 }
