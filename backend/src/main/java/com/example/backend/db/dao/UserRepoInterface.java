@@ -19,4 +19,10 @@ public interface UserRepoInterface {
     public List<User> getAllUsers();
 
     public int deleteUser(User user);
+
+    public User getUserByEmail(User user);
+
+    public User getUserByUsername(User user);
+
+    public int changePassword(User user);
 }

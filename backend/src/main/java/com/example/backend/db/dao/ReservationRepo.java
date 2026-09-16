@@ -92,7 +92,7 @@ public class ReservationRepo implements ReservationRepoInterface{
     public int postReservation(Reservation reservation) {
         try (
             Connection conn = DB.source().getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("insert into reservations (idReservation, roomName, user, workspaceName, city, date, startTime, endTime, active) values (?, ?, ?, ?, ?, ?, ?, ?, false)");
+            PreparedStatement pstmt = conn.prepareStatement("insert into reservations (idReservation, roomName, user, workspaceName, city, date, startTime, endTime, active) values (?, ?, ?, ?, ?, ?, ?, ?, true)");
         ) {
             pstmt.setInt(1, reservation.getIdReservation());
             pstmt.setString(2, reservation.getRoomName());

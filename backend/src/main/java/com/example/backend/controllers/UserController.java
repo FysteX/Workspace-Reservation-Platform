@@ -21,7 +21,18 @@ public class UserController {
     
     @PostMapping("getUser")
     public User getUser(@RequestBody User user) {
+        System.out.println("AAAA");
        return new UserRepo().getUser(user);
+    }
+
+    @PostMapping("getUserByEmail")
+    public User getUserByEmail(@RequestBody User user) {
+        return new UserRepo().getUserByEmail(user);
+    }
+
+    @PostMapping("getUserByUsername")
+    public User getUserByUsername(@RequestBody User user) {
+        return new UserRepo().getUserByUsername(user);
     }
 
     @PostMapping("postUser")
@@ -49,5 +60,9 @@ public class UserController {
         return new UserRepo().deleteUser(user);
     }
     
+    @PostMapping("changePassword")
+    public int changePassword(@RequestBody User user) {
+        return new UserRepo().changePassword(user);
+    }
     
 }

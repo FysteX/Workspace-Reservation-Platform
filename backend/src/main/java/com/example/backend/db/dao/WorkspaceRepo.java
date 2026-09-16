@@ -25,17 +25,20 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
                 pstmt.setString(1, cities[i]);
                 ResultSet rs = pstmt.executeQuery();
                 while(rs.next()) {
-                    workspaces.add(new Workspace(
-                    rs.getInt("idWorkspace"),
-                    rs.getString("name"),
-                    rs.getString("city"),
-                    rs.getInt("likes"),
-                    rs.getBoolean("activeStatus"),
-                    rs.getString("adress"), 
-                    rs.getString("firmName"),
-                    rs.getString("manager"),
-                    rs.getInt("tables"),
-                    rs.getInt("price")));
+                    if(rs.getBoolean("activeStatus")) {
+
+                        workspaces.add(new Workspace(
+                        rs.getInt("idWorkspace"),
+                        rs.getString("name"),
+                        rs.getString("city"),
+                        rs.getInt("likes"),
+                        rs.getBoolean("activeStatus"),
+                        rs.getString("adress"), 
+                        rs.getString("firmName"),
+                        rs.getString("manager"),
+                        rs.getInt("tables"),
+                        rs.getInt("price")));
+                    }
                 }
             }
 
@@ -51,7 +54,7 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
     public List<String> getCities() {
         try(
             Connection conn = DB.source().getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("select distinct city from workspaces");
+            PreparedStatement pstmt = conn.prepareStatement("select distinct city from workspaces where activeStatus = 1");
         ) {
 
             List<String> cities = new ArrayList<>();
@@ -81,17 +84,19 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                workspace = new Workspace(
-                rs.getInt("idWorkspace"),
-                rs.getString("name"),
-                rs.getString("city"),
-                rs.getInt("likes"),
-                rs.getBoolean("activeStatus"),
-                rs.getString("adress"), 
-                rs.getString("firmName"),
-                rs.getString("manager"),
-                rs.getInt("tables"),
-                rs.getInt("price"));
+                if(rs.getBoolean("activeStatus")) {
+                    workspace = new Workspace(
+                    rs.getInt("idWorkspace"),
+                    rs.getString("name"),
+                    rs.getString("city"),
+                    rs.getInt("likes"),
+                    rs.getBoolean("activeStatus"),
+                    rs.getString("adress"), 
+                    rs.getString("firmName"),
+                    rs.getString("manager"),
+                    rs.getInt("tables"),
+                    rs.getInt("price"));
+                }
             }
 
             return workspace;
@@ -112,7 +117,9 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
 
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
-                res++;
+                if(rs.getBoolean("activeStatus")) {
+                    res++;
+                }
             }
 
             return res;
@@ -134,7 +141,8 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                workspace = new Workspace(
+                if(rs.getBoolean("activeStatus")) {
+                    workspace = new Workspace(
                 rs.getInt("idWorkspace"),
                 rs.getString("name"),
                 rs.getString("city"),
@@ -145,6 +153,7 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
                 rs.getString("manager"),
                 rs.getInt("tables"),
                 rs.getInt("price"));
+                }
             }
 
             return workspace;
@@ -166,7 +175,8 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
             pstmt.setString(1, user.getUsername());
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
-                workspaces.add(new Workspace(
+                if(rs.getBoolean("activeStatus")) {
+                    workspaces.add(new Workspace(
                 rs.getInt("idWorkspace"),
                 rs.getString("name"),
                 rs.getString("city"),
@@ -177,6 +187,7 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
                 rs.getString("manager"),
                 rs.getInt("tables"),
                 rs.getInt("price")));
+                }
             }
 
             return workspaces;
@@ -197,7 +208,9 @@ public class WorkspaceRepo implements WorkspaceRepoInterface {
 
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                return rs.getInt("idWorkspace");
+                if(rs.getBoolean("activeStatus")) {
+                    return rs.getInt("idWorkspace");
+                }
             }
 
             return -1;

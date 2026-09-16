@@ -14,9 +14,11 @@ public class User {
     private String taxIdentificationNumber;
     private String type;
     private boolean pending;
+    private int idPicture;
 
     public User(String username, String password, String name, String lastName, String number, String email, String type,
-        String firmName, String firmAdress, String companyRegistrationNumber, String taxIdentificationNumber, boolean pending) {
+        String firmName, String firmAdress, String companyRegistrationNumber, String taxIdentificationNumber, boolean pending,
+        int idPicture) {
         this.username = username;
         this.password = password;
         this.firstname = name;
@@ -29,6 +31,7 @@ public class User {
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.type = type;
         this.pending = pending;
+        this.idPicture = idPicture;
     }
     public String getUsername() {
         return username;
@@ -101,5 +104,11 @@ public class User {
     }
     public void setPending(boolean pending) {
         this.pending = pending;
+    }
+    public int getIdPicture() {
+        return idPicture;
+    }
+    public void setIdPicture(int idPicture) {
+        this.idPicture = idPicture;
     }
 }
