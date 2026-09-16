@@ -1,0 +1,29 @@
+{
+  "name": "w5",
+  "city": "Novi Sad",
+  "adress": "a5",
+  "price": 500,
+  "tables": 7,
+  "elements": [
+    {
+      "name": "o1",
+      "type": "office",
+      "tables": 4
+    },
+    {
+      "name": "o1",
+      "type": "office",
+      "tables": 10
+    },
+    {
+      "name": "o2",
+      "type": "office",
+      "tables": 6
+    },
+    {
+        "name": "ch1",
+      "type": "conference hall",
+      "description": "Has tv and hdmi"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+<div name="menu">
+    <h3>Menu</h3>
+    <div style="text-align: right;">
+        <button (click)=logout()>Log out</button>
+    </div>
+    <button (click)="showSection(0)">Profile</button>
+    <br/>
+    <button (click)="showSection(1)">Add or update workspace</button><br/>
+    <button (click)="showSection(2)">Reservations</button>
+</div>
+@if(selectedOption == 0) {
+        <p style="color: red">{{message}}</p><br/>
+        <img [src]="profilePictureUrl" width="200"><br/>
+        Change profile picture<input type="file" accept="image/png, image/jpeg" (change)="onPictureSelected($event)"/><br/>
+    <div name="profile" class="section">
+        Username<input type="text" readonly [value]="loggedinUser.username"><br/>
+        Password<input type="text" [(ngModel)]="loggedinUser.password"><br/>
+        Firstname<input type="text" [(ngModel)]="loggedinUser.firstname"><br/>
+        Lastname<input type="text" [(ngModel)]="loggedinUser.lastname"><br/>
+        Phone number<input type="text" [(ngModel)]="loggedinUser.number"><br/>
+        Email<input type="text" [(ngModel)]="loggedinUser.email"><br/>
+        <button (click)="changeUserData()">Change</button><br/>
+    </div>
+    <h3>Workspaces</h3>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>City</th>
+            <th>Workspace elements</th>
+        </tr>
+        @for(workspace of workspaces; track workspace) {
+            <tr>
+                <td>{{workspace.name}}</td>
+                <td>{{workspace.city}}</td>
+                <td>
+                    Open space with {{workspace.tables}} tables <br/>
+                    @for(element of workspace.elements; track element) {
+                        {{element.name}} -
+                        @if(element.type == "office") {
+                            Office with {{element.tables}} tables
+                        } @else if(element.type == "conference hall") {
+                            Conference hall
+                        }
+                        <br/>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+} @else if(selectedOption == 1) {
+    <h3>Add or update workspace</h3>
+    <button (click)="update()">Update</button>
+    <button (click)="add()">Add</button>
+
+    @if(selectedSubOption == 0) {
+        <h3>Update workspaces</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+                <th>Price</th>
+                <th>Workspace elements</th>
+            </tr>
+            @for(workspace of workspaces; track workspace) {
+                <tr>
+                    <td>{{workspace.name}}</td>
+                    <td>{{workspace.city}}</td>
+                    <td>{{workspace.price}}</td>
+                    <td>
+                        Open space with {{workspace.tables}} tables <br/>
+                        @for(element of workspace.elements; track element) {
+                            {{element.name}} -
+                            @if(element.type == "office") {
+                                Office with {{element.tables}} tables <button (click)="showUpdateOfficeSection(element)">Update office</button>
+                            } @else if(element.type == "conference hall") {
+                                Conference hall <button (click)="showUpdateConferenceHallSection(element)">Update conference hall</button>
+                            }
+                            <br/>
+                        }
+                    </td>
+                    <td>
+                        <button (click)="showUpdateWorkspaceSection(workspace)">Update workspace</button><br/>
+                        <button (click)="changeUpdateOption(3, workspace)">Add office</button><br/>
+                        <button (click)="changeUpdateOption(4, workspace)">Add conference hall</button>
+                    </td>
+                </tr>
+            }
+        </table>
+        <hr/>
+        @if(updateOption == 0) {
+
+            <h2>Update workspace</h2>
+            <div class="section">
+                <p style="color:red">{{updateWorkspaceMessage}} </p>
+                Workspace name<input type="text" [(ngModel)]="updatingWorkspace.name"> <br/>
+                Price per hour<input type="text" [(ngModel)]="updatingWorkspace.price"> <br/>
+                Open space tables<input type="text" [(ngModel)]="updatingWorkspace.tables"> <br/>
+                City <input type="text" [(ngModel)]="updatingWorkspace.city"> <br/>
+                Adress <input type="text" [(ngModel)]="updatingWorkspace.adress"> <br/>
+                <button (click)="updateWorkspace()">Update</button><br/>
+            </div>
+
+        } @else if(updateOption == 1) {
+            
+            <h2>Update office {{updatingOffice.name}}</h2>
+            <p style="color:red">{{updateOfficeMessage}} </p>
+            <div class="section">
+                Tables <input type="text" [(ngModel)]="updatingOffice.tables"> <br/>
+            </div>
+            <button (click)="updateOffice()">Update</button>
+
+        } @else if(updateOption == 2) {
+
+            <h2>Update conference hall {{updatingConferenceHall.name}}</h2>
+            <p style="color:red">{{updateConferenceHallMessage}} </p>
+            <div class="section">
+                Description<input type="text" [(ngModel)]="updatingConferenceHall.description"> <br/>
+            </div>    
+            <button (click)="updateConferenceHall()">Update</button>
+        } @else if(updateOption == 3) {
+
+            <h2>Add office</h2>
+            <p style="color:red">{{officeMessage}} </p>
+            <div class="section">
+                Name<input type="text" [(ngModel)]="newOffice.name"> <br/>
+                Tables <input type="text" [(ngModel)]="newOffice.tables"> <br/>
+            </div>
+            <button (click)="addOffice(updatingWorkspace)">Add</button>
+        } @else if(updateOption == 4) {
+
+            <h2>Add conference hall</h2>
+            <p style="color:red">{{conferenceHallMessage}} </p>
+            <div class="section">
+                Name<input type="text" [(ngModel)]="newConferenceHall.name"> <br/>
+                Description<input type="text" [(ngModel)]="newConferenceHall.description"> <br/>
+            </div>
+            <button (click)="addConferenceHall(updatingWorkspace)">Add</button>
+        }
+    } @else if(selectedSubOption == 1) {
+        <h2>Add workspace</h2>
+        <p style="color:red">{{workspaceMessage}} </p>
+            <div class="section">
+            Workspace name<input type="text" [(ngModel)]="newWorkspace.name"> <br/>
+            Price per hour<input type="text" [(ngModel)]="newWorkspace.price"> <br/>
+            Open space tables<input type="text" [(ngModel)]="newWorkspace.tables"> <br/>
+            City <input type="text" [(ngModel)]="newWorkspace.city"> <br/>
+            Adress <input type="text" [(ngModel)]="newWorkspace.adress"> <br/>
+        </div>
+        <button (click)="addWorkspace()">Add</button><br/>
+        Add workspace via JSON file <input type="file" (change)="onFileSelected($event)" accept=".json">
+        
+
+        @if(workspaceAdded) {
+            <hr/>
+            <h2>Add office</h2>
+            <p style="color:red">{{officeMessage}} </p>
+            <div class="section">
+                Name<input type="text" [(ngModel)]="newOffice.name"> <br/>
+                Tables <input type="text" [(ngModel)]="newOffice.tables"> <br/>
+            </div>
+            <button (click)="addOffice(newWorkspace)">Add</button>
+            <hr/>
+
+            <h2>Add conference hall</h2>
+            <p style="color:red">{{conferenceHallMessage}} </p>
+            <div class="section">
+                Name<input type="text" [(ngModel)]="newConferenceHall.name"> <br/>
+                Description<input type="text" [(ngModel)]="newConferenceHall.description"> <br/>
+            </div>
+            <button (click)="addConferenceHall(newWorkspace)">Add</button>
+        }
+    }
+} @else if(selectedOption == 2) {
+    <h3>Reservations</h3>
+    <table>
+        <tr>
+            <th>Workspace name</th>
+            <th>Room name</th>
+            <th>City</th>
+            <th>Date</th>
+            <th>Start time</th>
+            <th>End time</th>
+            <th>Active</th>
+        </tr>
+        @for(reservation of reservations; track reservation.idReservation) {
+            <tr>
+                <td>{{reservation.workspaceName}}</td>
+                <td>{{reservation.roomName}}</td>
+                <td>{{reservation.city}}</td>
+                <td>{{reservation.date}}</td>
+                <td>{{reservation.startTime}}</td>
+                <td>{{reservation.endTime}}</td>
+                @if(reservation.active) {
+                    <td>Yes</td>
+                } @else {
+                    <td>No</td>
+                }
+                @if(reservationHasBegun(reservation)) {
+                    <button (click)="setShowedUp(reservation, true)">Accept</button>
+                    <button (click)="setShowedUp(reservation, false)">Decline</button>
+                }
+            </tr>
+        }
+    </table>
+    <hr/>
+    <h3>Generate monthly report</h3>
+
+    Select month <select [(ngModel)]="month"> 
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+    </select>
+    <div class="section">
+        Enter year<input type="text" [(ngModel)]="year">
+    </div>
+    <button (click)="generatePdfReport()">Generate</button>
+    <hr/>
+
+    <h3>Move reservation</h3>
+
+    Select room<select (change)="onSelectionChange($event)" name="rooms" [size]="1" [(ngModel)]="selectedRoom">
+        @for(workspace of workspaces; track workspace.idWorkspace) {
+            @for(room of workspace.elements; track room) {
+                <option value="{{workspace.idWorkspace}};{{room.name}}">{{workspace.name}} {{workspace.city}} {{room.name}}</option>
+            }
+            @for(table of numSequence(workspace.tables) ; track table) {
+                <option value="{{workspace.idWorkspace}};t{{table}}">{{workspace.name}} {{workspace.city}} t{{table}}</option>
+            }
+        }
+    </select>
+
+
+    <full-calendar [options]="calendarOptions"></full-calendar>
+}

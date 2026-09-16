@@ -1,0 +1,46 @@
+<div>
+<h3>Login</h3>
+<div class="section">
+    <p>Username</p><p style="color: red">{{message}}</p><br/>
+    <input type="text" [(ngModel)]="user.username"> <br/>
+    Password<input type="password" [(ngModel)]="user.password"><br/>
+    <a [routerLink]="['/reset-password']">forgot password</a><br/>
+    <button (click)="login()">Login</button><button (click)="redirectToRegisterComponent()">Register</button>
+    <br/>
+</div>
+<div class="section">
+    <p>Password for redirecting to admin login page</p>
+    <p style="color: red;">{{adminPasswordMessage}}</p><br/><input type = "password" [(ngModel)]="adminPassword"><br/>
+    <button (click)="redirectToAdminLoginComponent()">Redirect</button>
+</div><hr/>
+<div class="section">
+    Registered Coworking workspaces: {{numOfWorkspaces}}
+    <br/><br/>
+    Search workspaces by name and city<br/>
+    <input type="text" [(ngModel)]="searchInput">
+</div>
+<select multiple name="cities" [size]="1" [(ngModel)]="selectedCities">
+    @for(city of cities; track city) {
+        <option>{{city}}</option>
+    }
+</select>
+<button (click)="search()">Search</button>
+<p style="color:gray">{{searchResultMessage}}</p>
+@if(searchResults.length > 0) {
+        <h3>Search result</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+            </tr>
+            @for(searchResult of searchResults; track searchResult) {
+                <tr>
+                    <td>{{searchResult.name}}</td>
+                    <td>{{searchResult.city}}</td>
+                    <td><button (click)="redirectToWorkspaceDetailComponent(searchResult)">Details</button></td>
+                </tr>
+            }
+        </table>
+}
+</div>
+

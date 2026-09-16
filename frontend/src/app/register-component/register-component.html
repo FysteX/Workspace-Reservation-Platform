@@ -1,0 +1,33 @@
+<h3>Register</h3>
+<button (click)="memberRegister()">Member</button><button (click)="managerRegister()">Manager</button>
+<p style="color: red">{{message}}</p>
+@if(user.type == "member") {
+    <h3>Register as member</h3>
+    <div class="section">
+        Username<input type="text" [(ngModel)]="user.username"> <br/>
+        Password<input type="password" [(ngModel)]="user.password"><br/>
+        Firstname<input type="text" [(ngModel)]="user.firstname"><br/>
+        Lastname<input type="text" [(ngModel)]="user.lastname"><br/>
+        Number<input type="text" [(ngModel)]="user.number"><br/>
+        Email<input type="text" [(ngModel)]="user.email"><br/>
+        <input type="file" accept="image/png, image/jpeg" (change)="onFileSelected($event)"/><br/>
+    </div>
+    <button (click)="register()">Register</button>
+} @else if (user.type == "manager") {
+    <h3>Register as manager</h3>
+    <div class="section">
+        Username<input type="text" [(ngModel)]="user.username"> <br/>
+        Password<input type="password" [(ngModel)]="user.password"><br/>
+        Firstname<input type="text" [(ngModel)]="user.firstname"><br/>
+        Lastname<input type="text" [(ngModel)]="user.lastname"><br/>
+        Number<input type="text" [(ngModel)]="user.number"><br/>
+        Email<input type="text" [(ngModel)]="user.email"><br/>
+        Firm name<input type="text" [(ngModel)]="user.firmName"><br/>
+        Firm adress<input type="text" [(ngModel)]="user.firmAdress"><br/>
+        Company registration number<input type="text" [(ngModel)]="user.companyRegistrationNumber"><br/>
+        Tax identification number<input type="text" [(ngModel)]="user.taxIdentificationNumber"><br/>
+        <input type="file" accept="image/png, image/jpeg" (change)="onFileSelected($event)" /><br/>
+    </div>        
+    <button (click)="register()">Register</button>
+
+} @else {}

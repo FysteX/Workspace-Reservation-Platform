@@ -1,0 +1,137 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { 
+    height: 100%; 
+}
+body {
+    margin: 0; 
+
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    font-size: 20px;
+
+    background-image: url('/background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    background-repeat: repeat-y;
+}
+
+app-root {
+  width: 100%;           
+  max-width: 900px;    
+  padding: 0 15px;       
+  box-sizing: border-box; 
+  display: flex;
+  flex-direction: column;
+  gap: 20px;             
+}
+
+button {
+  background-color: #24BF91;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  max-width: 100;
+  max-height: 50;
+}
+
+button:hover {
+  background-color: #28D4A1;
+}
+
+input[type="text"],
+input[type="password"]{
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  transition: 0.2s;
+  max-width: 800px;
+}
+
+input[type="text"],
+input[type="password"]:focus {
+  background: white;
+  border-color: #1976d2;
+}
+
+h3 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+  margin: 0 0 10px 0;
+  
+}
+
+table {
+    border-spacing: 20px;
+    font-size: 20px; 
+    min-width: 600px;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+th, td {
+  padding: clamp(2px, 1vw, 10px);
+  font-size: clamp(10px, 1.5vw, 16px);
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  flex: 1 1 300px;
+  min-width: 20px;
+}
+
+.card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 10px 40px 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.footer {
+  color: white;
+  padding: 20px;
+  text-align: center;
+}

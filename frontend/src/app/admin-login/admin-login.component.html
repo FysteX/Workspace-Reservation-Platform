@@ -1,0 +1,7 @@
+<h3>Admin login</h3>
+<p style="color: red">{{message}}</p>
+<div class="section">
+    Username<input type="text" [(ngModel)]="user.username"><br/>
+    Password<input type="password" [(ngModel)]="user.password"><br/>
+</div>
+<button (click)="login()">Login</button>

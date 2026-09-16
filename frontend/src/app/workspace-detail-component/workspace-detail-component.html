@@ -1,0 +1,66 @@
+<h3>Details</h3>
+@if(storageService.enableReservation) {
+    <div style="text-align: right;">
+        <button (click)="logout()">Log out</button><br/>
+        <button (click)="backToUserPage()">Profile</button>
+    </div>
+}
+<table style="border-spacing: 20px; font-size: 20px; text-align: center;">
+    <tr>
+        <th>Name</th>
+        <th>City</th>
+        <th>Adress</th>
+        <th>Firm name</th>
+        <th>Manager</th>
+        <th>Likes</th>
+    </tr>
+    <tr>
+        <td style="text-align: center;">{{storageService.selectedWorkspace.name}}</td>
+        <td style="text-align: center;">{{storageService.selectedWorkspace.city}}</td>
+        <td style="text-align: center;">{{storageService.selectedWorkspace.adress}}</td>
+        <td style="text-align: center;">{{storageService.selectedWorkspace.firmName}}</td>
+        <td style="text-align: center;">{{manager.firstname}} {{manager.lastname}}</td>
+        <td style="text-align: center;">{{storageService.selectedWorkspace.likes}}</td>
+    </tr>
+</table>
+
+@if(storageService.enableReservation) {
+    <p style="color:red">{{message}}</p>
+    @if(adequateRooms.length > 1) {
+        <button style="margin-right: 82px" (click)="changeRoom(-1)">Previous room</button>
+        <button (click)="changeRoom(1)">Next room</button>
+    }
+    <br/>
+
+    <mat-form-field appearance="outline">
+        <mat-label>{{roomType}} {{currentRoomName}}</mat-label>
+
+        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [min]="today">
+
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <br/>
+    <button (click)="showReservations()">Show reservations</button>
+    <br/>
+    @if(dateSelected) {
+        <h3>Reservations</h3>
+        @for(reservation of reservationsForRoom; track reservation.idReservation) {
+            @if(reservation.date == selectedDateString) {
+                <p style="text-indent: 30px;">{{reservation.startTime}} - {{reservation.endTime}}</p>
+            } 
+        }
+        <h3>Reserve</h3>
+        <div class="section">
+            Start hour:<input type="text" [(ngModel)]="startHour">
+            Minute:<input type="text" [(ngModel)]="startMin"><br/>
+            
+            End hour:<input type="text" [(ngModel)]="endHour">
+            Minute:<input type="text" [(ngModel)]="endMin"><br/>
+        </div>
+        <button (click)="reserve()">Reserve</button>
+        <p style="color: red">{{reservingMessage}}</p>
+    }
+}

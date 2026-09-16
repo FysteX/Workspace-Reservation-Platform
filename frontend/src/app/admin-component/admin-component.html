@@ -1,0 +1,87 @@
+<h3>Users</h3>
+<div style="text-align: right;">
+    <button (click)=logout()>Log out</button>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Phone number</th>
+            <th>Email</th>
+            <th>Type</th>
+            <th>Firm name</th>
+            <th>Firm adress</th>
+            <th>Company registration number</th>
+            <th>Tax identification number</th>
+        </tr>
+        @for(user of users; track user.username) {
+            <tr>
+                <td>{{user.username}}</td>
+                <td>{{user.firstname}}</td>
+                <td>{{user.lastname}}</td>
+                <td>{{user.number}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.type}}</td>
+                <td>{{user.firmName}}</td>
+                <td>{{user.firmAdress}}</td>
+                <td>{{user.companyRegistrationNumber}}</td>
+                <td>{{user.taxIdentificationNumber}}</td>
+                <td>
+                    @if(user.pending) {
+                        <button (click)="register(user)">Register</button>
+                    }
+                    <button (click)="update(user)">Update</button>
+                    <button (click)="delete(user)">Delete</button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<h3>Workspaces</h3>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>City</th>
+        <th>Adress</th>
+        <th>Firm name</th>
+        <th>Manager</th>
+        <th>Tables</th>
+        <th>Price</th>
+    </tr>
+    @for(workspace of workspaces; track workspace.idWorkspace) {
+        @if(!workspace.activeStatus){
+            <tr>
+                <td>{{workspace.name}}</td>
+                <td>{{workspace.city}}</td>
+                <td>{{workspace.adress}}</td>
+                <td>{{workspace.firmName}}</td>
+                <td>{{workspace.manager}}</td>
+                <td>{{workspace.tables}}</td>
+                <td>{{workspace.price}}</td>
+                <td>
+                    <button (click)="approveWorkspace(workspace)">Approve</button>
+                    <button (click)="disapproveWorkspace(workspace)">Disapprove</button>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@if(updating) {
+    <p style="color: red">{{updatingMessage}}</p><br/>
+        Username<input type="text" readonly [value]="userBeingUpdated.username"><br/>
+        Password<input type="text" [(ngModel)]="userBeingUpdated.password"><br/>
+        Firstname<input type="text" [(ngModel)]="userBeingUpdated.firstname"><br/>
+        Lastname<input type="text" [(ngModel)]="userBeingUpdated.lastname"><br/>
+        Phone number<input type="text" [(ngModel)]="userBeingUpdated.number"><br/>
+        Email<input type="text" [(ngModel)]="userBeingUpdated.email"><br/>
+        @if(userBeingUpdated.type == "manager") {
+            Firm name<input type="text" [(ngModel)]="userBeingUpdated.firmName"><br/>
+            Firm adress<input type="text" [(ngModel)]="userBeingUpdated.firmAdress"><br/>
+            Company registratio number<input type="text" [(ngModel)]="userBeingUpdated.companyRegistrationNumber"><br/>
+            Tax identification number<input type="text" [(ngModel)]="userBeingUpdated.taxIdentificationNumber"><br/>
+        }
+        <button (click)="changeUserData()">Change</button><br/>
+}

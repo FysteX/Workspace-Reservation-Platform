@@ -1,0 +1,89 @@
+<div>
+    <div style="text-align: right;">
+            <button (click)=logout()>Log out</button>
+    </div> <br/>
+    <h3>Menu</h3>
+    <div class="section" name="menu">
+        <button (click)="showSection(0)">Profile</button><br/>
+        <button (click)="showSection(1)">Reserve workspace</button>
+    </div>
+    @if(selectedOption == 0) {
+        <h3>Profile</h3>
+        <br/>
+        <img [src]="profilePictureUrl" width="200"><br/>
+        Change profile picture<input type="file" accept="image/png, image/jpeg" (change)="onFileSelected($event)"/><br/>
+        <div name="profile" class="section">
+            Username<input type="text" readonly [value]="loggedinUser.username"><br/>
+            Password<input type="text" [(ngModel)]="loggedinUser.password"><br/>
+            Firstname<input type="text" [(ngModel)]="loggedinUser.firstname"><br/>
+            Lastname<input type="text" [(ngModel)]="loggedinUser.lastname"><br/>
+            Phone number<input type="text" [(ngModel)]="loggedinUser.number"><br/>
+            Email<input type="text" [(ngModel)]="loggedinUser.email"><br/>
+            <p style="color: red">{{message}}</p>
+            <button (click)="changeUserData()">Change</button><br/>
+        </div>    
+            <h3>Reservations</h3>
+            <table>
+                <tr>
+                    <th>Workspace name</th>
+                    <th>City</th>
+                    <th>Date</th>
+                    <th>Start time</th>
+                    <th>End time</th>
+                    <th>Active</th>
+                </tr>
+                @for(reservation of reservations; track reservation.idReservation) {
+                    <tr>
+                        <td>{{reservation.workspaceName}}</td>
+                        <td>{{reservation.city}}</td>
+                        <td>{{reservation.date}}</td>
+                        <td>{{reservation.startTime}}</td>
+                        <td>{{reservation.endTime}}</td>
+                        @if(reservation.active) {
+                            <td>Yes</td>
+                        } @else {
+                            <td>No</td>
+                        }
+                    </tr>
+                }
+            </table>
+    } @else if (selectedOption == 1) {
+        <div class="section">
+        Search workspaces<br/>
+            <input type="text" [(ngModel)]="searchInput">
+            <select multiple name="cities" [size]="1" [(ngModel)]="selectedCities">
+                @for(city of cities; track city) {
+                    <option>{{city}}</option>
+                }
+            </select>
+            <input type="radio" name="roomType" value="table" [(ngModel)]="roomType">Table
+            <input type="radio" name="roomType" value="office" [(ngModel)]="roomType">Office
+            <input type="radio" name="roomType" value="conference hall" [(ngModel)]="roomType">Conference hall
+            <button (click)="search()">Search</button>
+        </div>
+        <br/>
+        <div class="section">   
+            @if (roomType == "office") {
+                <br/>Enter number of office tables<input type="text" [(ngModel)]="officeTables">
+            }
+            <p style="color:gray">{{searchResultMessage}}</p>
+            <br/>
+            @if(searchResults.length > 0) {
+                <h3>Search results</h3>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>City</th>
+                    </tr>
+                    @for(searchResult of searchResults; track searchResult) {
+                        <tr>
+                            <td>{{searchResult.name}}</td>
+                            <td>{{searchResult.city}}</td>
+                            <td><button (click)="redirectToWorkspaceDetailComponent(searchResult)">Details</button></td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    }
+</div>
